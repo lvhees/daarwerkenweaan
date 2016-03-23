@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="name-of-project " default="build">
+    <target name="build" depends="prepare,vendors,dist"/>
+
+    <property file="build.properties"/>
+
+	<patternset id="wp">
+		<include name="config/**"/>
+        <include name="vendor/**"/>
+        <include name="web/**"/>
+        <exclude name="web/**/node_modules/**"/>
+	</patternset>
+
+	<fileset dir="." id="wp.files">
+		<patternset refid="wp"/>
+	</fileset>
+
+	<target name="clean"
+			unless="clean.done"
+			description="Cleanup build artifacts">
+		<delete dir="${basedir}/build/logs"/>
+		<delete dir="${basedir}/dist"/>
+		<property name="clean.done" value="true"/>
+	</target>
+
+	<target name="prepare"
+			unless="prepare.done"
+			depends="clean"
+			description="Prepare for build">
+		<mkdir dir="${basedir}/build/logs"/>
+		<mkdir dir="${basedir}/dist"/>
+		<property name="prepare.done" value="true"/>
+	</target>
+
+	<target name="vendors" description="Install dependencies">
+		<exec executable="composer" failonerror="true">
+			<arg value="install" />
+		</exec>
+	</target>
+
+    <target name="dist" description="Create a distribution to be deployed">
+		<copy todir="${basedir}/dist">
+			<fileset refid="wp.files"/>
+		</copy>
+	</target>
+
+</project>
