@@ -1,0 +1,13 @@
+.sidenote {
+	padding: 10px;
+	font-style: italic;
+	font-size: .9em;
+	clear: left;
+	float: left;
+	width: 200px;
+}
+
+.sidenote.right {
+	clear: right;
+	float: right;
+}
